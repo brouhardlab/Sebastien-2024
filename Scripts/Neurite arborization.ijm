@@ -1,0 +1,32 @@
+Title=getTitle();
+run("Duplicate...", "duplicate channels=1");
+rename(Title+"-Tubb3");
+selectWindow(Title);
+run("Duplicate...", "duplicate channels=1");
+rename(Title+"-Blur");
+run("Gaussian Blur...", "sigma=10 scaled");
+imageCalculator("Divide create 32-bit", Title+"-Tubb3",Title+"-Blur");
+selectWindow("Result of "+Title+"-Tubb3");
+run("Enhance Contrast", "saturated=0.35");
+run("Enhance Contrast", "saturated=0.35");
+run("Gaussian Blur...", "sigma=1 scaled");
+setAutoThreshold("Otsu dark");
+//run("Threshold...");
+setOption("BlackBackground", false);
+run("Convert to Mask");
+run("Skeletonize");
+run("Measure");
+
+
+selectWindow(Title);
+run("Duplicate...", "duplicate channels=2");
+rename(Title+"-Nc");
+run("Gaussian Blur...", "sigma=1 scaled");
+setAutoThreshold("Otsu dark");
+//run("Threshold...");
+setOption("BlackBackground", false);
+run("Convert to Mask");
+run("Watershed");
+run("Analyze Particles...", "size=25-150 add");
+roiManager("count");
+roiManager("reset");
